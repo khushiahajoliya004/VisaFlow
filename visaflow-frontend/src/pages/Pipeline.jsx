@@ -3,6 +3,8 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import Badge from "@/components/common/Badge";
 import Avatar from "@/components/common/Avatar";
+import AddLeadModal from "@/components/common/AddLeadModal";
+import ConvertToCaseModal from "@/components/common/ConvertToCaseModal";
 import { mockLeads } from "@/data/mockData";
 
 const COLUMNS = [
@@ -38,6 +40,8 @@ export default function Pipeline() {
   const [activeFilters, setActiveFilters] = useState({ source: "", score: "" });
   const [aiBarOpen, setAiBarOpen] = useState(true);
   const [dragId, setDragId] = useState(null);
+  const [showAddLead, setShowAddLead] = useState(false);
+  const [convertLead, setConvertLead] = useState(null);
 
   // Use live data when available, otherwise local state (mock)
   const isLive = liveLeads !== undefined;
@@ -87,6 +91,16 @@ export default function Pipeline() {
 
   return (
     <div className="flex flex-col h-full p-6 gap-4 overflow-hidden">
+
+      {showAddLead && <AddLeadModal onClose={() => setShowAddLead(false)} />}
+      {convertLead && (
+        <ConvertToCaseModal
+          lead={convertLead}
+          onClose={() => setConvertLead(null)}
+          onSuccess={() => setConvertLead(null)}
+        />
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -94,6 +108,14 @@ export default function Pipeline() {
           <p className="text-sm text-on-surface-variant mt-0.5">{filtered.length} leads across all stages</p>
         </div>
         <div className="flex gap-2">
+          <button
+            onClick={() => setShowAddLead(true)}
+            className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold rounded-lg text-white"
+            style={{ backgroundColor: "#001b44" }}
+          >
+            <span className="material-symbols-outlined text-sm">person_add</span>
+            Add Lead
+          </button>
           {[{ v: "kanban", icon: "view_kanban", label: "Kanban" }, { v: "list", icon: "view_list", label: "List" }].map((btn) => (
             <button
               key={btn.v}
@@ -146,7 +168,7 @@ export default function Pipeline() {
                 </div>
                 <div className="flex-1 overflow-y-auto space-y-2 min-h-16 pr-0.5 no-scrollbar">
                   {colLeads.map((lead) => (
-                    <LeadCard key={lead._id} lead={lead} colKey={col.key} onMove={moveStage} onDragStart={onDragStart} isDragging={dragId === lead._id} />
+                    <LeadCard key={lead._id} lead={lead} colKey={col.key} onMove={moveStage} onDragStart={onDragStart} isDragging={dragId === lead._id} onConvert={setConvertLead} />
                   ))}
                   {colLeads.length === 0 && (
                     <div className="rounded-xl border-2 border-dashed border-outline-variant/40 text-center py-6 text-xs text-on-surface-variant">Drop here</div>
@@ -183,11 +205,18 @@ export default function Pipeline() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {NEXT_STATUS[l.status] && (
-                      <button onClick={() => moveStage(l._id)} className="text-xs font-semibold px-2.5 py-1 rounded-lg" style={{ backgroundColor: "#001b44", color: "#fff" }}>
-                        Move →
-                      </button>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {NEXT_STATUS[l.status] && (
+                        <button onClick={() => moveStage(l._id)} className="text-xs font-semibold px-2.5 py-1 rounded-lg" style={{ backgroundColor: "#f2f4f6", color: "#001b44", border: "1px solid #c4c6d2" }}>
+                          Move →
+                        </button>
+                      )}
+                      {CONVERT_STAGES.includes(l.status) && (
+                        <button onClick={() => setConvertLead(l)} className="text-xs font-semibold px-2.5 py-1 rounded-lg" style={{ backgroundColor: "#001b44", color: "#fff" }}>
+                          To Case
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -216,8 +245,12 @@ export default function Pipeline() {
   );
 }
 
-function LeadCard({ lead, colKey, onMove, onDragStart, isDragging }) {
-  const isQualified = colKey === "qualified";
+const CONVERT_STAGES = ["qualified", "documentsPending", "applicationFiled", "decisionPending", "closed"];
+
+function LeadCard({ lead, colKey, onMove, onDragStart, isDragging, onConvert }) {
+  const isQualified  = colKey === "qualified";
+  const canConvert   = CONVERT_STAGES.includes(colKey);
+
   return (
     <div
       draggable
@@ -239,6 +272,7 @@ function LeadCard({ lead, colKey, onMove, onDragStart, isDragging }) {
           </span>
         )}
       </div>
+
       <div className="flex flex-wrap gap-1 mb-2">
         <Badge label={lead.source} variant={lead.source} />
         {lead.budget && (
@@ -247,19 +281,34 @@ function LeadCard({ lead, colKey, onMove, onDragStart, isDragging }) {
           </span>
         )}
       </div>
+
       {isQualified && (
         <div className="mb-2 p-2 rounded-lg text-[10px]" style={{ backgroundColor: "#e6faf7", color: "#065f46" }}>
           <span className="font-bold" style={{ color: "#00a884" }}>✦ AI REC: </span>
           Request IELTS &amp; Employment docs now — high close probability.
         </div>
       )}
+
+      {/* Move Stage button */}
       {NEXT_STATUS[lead.status] && (
         <button
-          onClick={() => onMove(lead._id)}
-          className="w-full text-[10px] font-semibold py-1.5 rounded-lg transition-all border border-outline-variant/30 hover:bg-surface-container"
+          onClick={(e) => { e.stopPropagation(); onMove(lead._id); }}
+          className="w-full text-[10px] font-semibold py-1.5 rounded-lg transition-all border border-outline-variant/30 hover:bg-surface-container mb-1.5"
           style={{ backgroundColor: "#f2f4f6", color: "#001b44" }}
         >
           Move Stage →
+        </button>
+      )}
+
+      {/* Convert to Case button — shown from Qualified onwards */}
+      {canConvert && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onConvert(lead); }}
+          className="w-full text-[10px] font-bold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1"
+          style={{ backgroundColor: "#001b44", color: "#fff" }}
+        >
+          <span className="material-symbols-outlined text-sm">folder_shared</span>
+          Convert to Case
         </button>
       )}
     </div>
