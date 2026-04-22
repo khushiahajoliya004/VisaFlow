@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ── Design-token colour palette (mirrors the HTML's tailwind.config) ─────── */
+@theme {
+  /* Primary palette */
+  --color-primary:           #001b44;
+  --color-primary-container: #002f6c;
+  --color-primary-fixed:     #d8e2ff;
+  --color-primary-fixed-dim: #aec6ff;
+  --color-inverse-primary:   #aec6ff;
+  --color-on-primary:        #ffffff;
+  --color-on-primary-container:     #7999dc;
+  --color-on-primary-fixed:         #001a42;
+  --color-on-primary-fixed-variant: #224583;
+
+  /* Secondary palette */
+  --color-secondary:           #325f9c;
+  --color-secondary-container: #90bafd;
+  --color-secondary-fixed:     #d5e3ff;
+  --color-secondary-fixed-dim: #a7c8ff;
+  --color-on-secondary:        #ffffff;
+  --color-on-secondary-container:     #154985;
+  --color-on-secondary-fixed:         #001b3c;
+  --color-on-secondary-fixed-variant: #114783;
+
+  /* Tertiary palette */
+  --color-tertiary:           #002025;
+  --color-tertiary-container: #00373e;
+  --color-tertiary-fixed:     #9cf0ff;
+  --color-tertiary-fixed-dim: #00daf3;
+  --color-on-tertiary:        #ffffff;
+  --color-on-tertiary-container:     #00a9bc;
+  --color-on-tertiary-fixed:         #001f24;
+  --color-on-tertiary-fixed-variant: #004f58;
+
+  /* Error */
+  --color-error:           #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error:        #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Surface & background */
+  --color-background:              #f7f9fb;
+  --color-surface:                 #f7f9fb;
+  --color-surface-bright:          #f7f9fb;
+  --color-surface-dim:             #d8dadc;
+  --color-surface-variant:         #e0e3e5;
+  --color-surface-tint:            #3c5d9c;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low:   #f2f4f6;
+  --color-surface-container:       #eceef0;
+  --color-surface-container-high:  #e6e8ea;
+  --color-surface-container-highest:#e0e3e5;
+  --color-inverse-surface:         #2d3133;
+  --color-inverse-on-surface:      #eff1f3;
+
+  /* Content */
+  --color-on-background:      #191c1e;
+  --color-on-surface:         #191c1e;
+  --color-on-surface-variant: #434750;
+  --color-outline:            #747781;
+  --color-outline-variant:    #c4c6d2;
+
+  /* Keep the old aliases so other pages don't break */
+  --color-navy:     #001b44;
+  --color-teal:     #00daf3;
+  --color-surface-page: #f7f9fb;
+
+  /* Font families */
+  --font-headline: 'Manrope', system-ui, sans-serif;
+  --font-body:     'Inter', system-ui, sans-serif;
+  --font-label:    'Inter', system-ui, sans-serif;
+}
+
+/* ── Base resets ─────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f7f9fb;
+  color: #191c1e;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-headline {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  text-align: left;
+  border: none;
+  margin: 0;
+}
+
+/* ── Material Symbols ────────────────────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Special panels ──────────────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(224, 227, 229, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+.ai-gradient {
+  background: linear-gradient(135deg, #001b44 0%, #002f6c 100%);
+}
+
+.glass-pane {
+  background: rgba(224, 227, 229, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.node-connector::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -32px;
+  width: 2px;
+  height: 32px;
+  background: repeating-linear-gradient(to bottom, #747781 0, #747781 4px, transparent 4px, transparent 8px);
+}
+
+.linear-connector::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -32px;
+  width: 2px;
+  height: 32px;
+  background: #cbd5e1;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c4c6d2; border-radius: 9999px; }
+
+/* ── Other page helpers (kept from before) ───────────────────────────────── */
+.kanban-scroll { overflow-x: auto; padding-bottom: 8px; }
+.kanban-scroll::-webkit-scrollbar { height: 4px; }
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: 19px; top: 0; bottom: 0;
+  width: 2px;
+  background: #e8ecf4;
+}
+.bubble-out { background: #001b44; color: #fff; border-radius: 16px 16px 4px 16px; }
+.bubble-in  { background: #fff; color: #191c1e; border-radius: 16px 16px 16px 4px; border: 1px solid #e0e3e5; }
+.flow-connector { width: 2px; height: 28px; background: #e0e3e5; margin: 0 auto; }
