@@ -53,13 +53,13 @@ export default function Cases() {
 
       {/* Filters */}
       <div className="bg-white rounded-xl border border-outline-variant/30 p-4 shadow-sm flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-48">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+        <div style={{ flex: 1, minWidth: 200, display: "flex", alignItems: "center", gap: 8, background: "#f2f4f6", border: "1px solid #e2e8f0", borderRadius: 8, padding: "0 12px", height: 36 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#94a3b8", flexShrink: 0 }}>search</span>
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or case number…"
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-secondary/20 bg-surface-container-low"
+            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13, color: "#1e293b" }}
           />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="text-xs border border-outline-variant/30 rounded-lg px-3 py-2 bg-white text-on-background focus:outline-none">
@@ -83,11 +83,21 @@ export default function Cases() {
 
       {/* Table */}
       <div className="bg-white rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
-        <table className="w-full text-sm">
-          <thead className="bg-surface-container-low border-b border-outline-variant/30">
+        <table style={{ width: "100%", tableLayout: "fixed", borderCollapse: "collapse", fontSize: 13 }}>
+          <colgroup>
+            <col style={{ width: "13%" }} />  {/* Case # */}
+            <col style={{ width: "20%" }} />  {/* Applicant */}
+            <col style={{ width: "10%" }} />  {/* Visa Type */}
+            <col style={{ width: "10%" }} />  {/* Branch */}
+            <col style={{ width: "16%" }} />  {/* Status */}
+            <col style={{ width: "14%" }} />  {/* Counsellor */}
+            <col style={{ width: "12%" }} />  {/* Created */}
+            <col style={{ width: "8%"  }} />  {/* Action */}
+          </colgroup>
+          <thead style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
             <tr>
               {["Case #", "Applicant", "Visa Type", "Branch", "Status", "Counsellor", "Created", ""].map((h) => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-on-surface-variant">{h}</th>
+                <th key={h} style={{ textAlign: "left", padding: "12px 16px", fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -95,43 +105,51 @@ export default function Cases() {
             {filtered.map((c) => {
               const st = STATUS_STYLE[c.status] || { bg: "#f5f5f5", color: "#757575", dot: "#757575" };
               return (
-                <tr key={c._id} className="border-b border-outline-variant/20 hover:bg-surface-container-low/60 cursor-pointer transition-all last:border-0" onClick={() => navigate(`/cases/${c._id}`)}>
-                  <td className="px-4 py-3"><span className="text-xs font-mono font-bold text-on-surface-variant">{c.caseNumber}</span></td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0" style={{ background: "linear-gradient(135deg, #001b44 0%, #325f9c 100%)" }}>
+                <tr key={c._id}
+                  style={{ borderBottom: "1px solid #f1f5f9", cursor: "pointer" }}
+                  onClick={() => navigate(`/cases/${c._id}`)}
+                  onMouseEnter={e => e.currentTarget.style.background = "#f8fafc"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <td style={{ padding: "14px 16px" }}>
+                    <span style={{ fontSize: 12, fontFamily: "monospace", fontWeight: 700, color: "#64748b" }}>{c.caseNumber}</span>
+                  </td>
+                  <td style={{ padding: "14px 16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg, #001b44 0%, #325f9c 100%)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 12, flexShrink: 0 }}>
                         {initials(c.applicantName)}
                       </div>
-                      <div>
-                        <p className="font-semibold text-on-background text-sm">{c.applicantName}</p>
-                        <p className="text-[10px] text-on-surface-variant">{c.nationality}</p>
+                      <div style={{ minWidth: 0 }}>
+                        <p style={{ fontWeight: 600, color: "#0f172a", fontSize: 13, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.applicantName}</p>
+                        <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>{c.nationality}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-xs text-on-surface-variant">{c.visaType}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm text-on-surface-variant">location_on</span>
-                      <span className="text-xs text-on-surface-variant">{c.branch}</span>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#64748b" }}>{c.visaType}</td>
+                  <td style={{ padding: "14px 16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 14, color: "#94a3b8" }}>location_on</span>
+                      <span style={{ fontSize: 12, color: "#64748b" }}>{c.branch}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3">
-                    <span className="flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full w-fit" style={{ backgroundColor: st.bg, color: st.color }}>
-                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: st.dot }} />
+                  <td style={{ padding: "14px 16px" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 99, backgroundColor: st.bg, color: st.color, whiteSpace: "nowrap" }}>
+                      <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: st.dot, flexShrink: 0 }} />
                       {c.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-on-surface-variant">{c.counsellorId || "—"}</td>
-                  <td className="px-4 py-3 text-xs text-on-surface-variant">
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#64748b" }}>
+                    {c.counsellorId && c.counsellorId.includes(" ") ? c.counsellorId : "—"}
+                  </td>
+                  <td style={{ padding: "14px 16px", fontSize: 12, color: "#64748b" }}>
                     {new Date(c.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                   </td>
-                  <td className="px-4 py-3">
+                  <td style={{ padding: "14px 16px" }}>
                     <button
-                      className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg hover:bg-primary hover:text-white transition-all"
-                      style={{ backgroundColor: "#f2f4f6", color: "#001b44" }}
+                      style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, padding: "5px 12px", borderRadius: 8, backgroundColor: "#f1f5f9", color: "#001b44", border: "1px solid #e2e8f0", cursor: "pointer", whiteSpace: "nowrap" }}
                       onClick={(e) => { e.stopPropagation(); navigate(`/cases/${c._id}`); }}
                     >
-                      View <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                      View <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_forward</span>
                     </button>
                   </td>
                 </tr>

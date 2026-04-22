@@ -93,52 +93,47 @@ export default function Documents() {
       </div>
 
       {/* Search */}
-      <div className="relative">
-        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10, padding: "0 12px", height: 40 }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 18, color: "#94a3b8", flexShrink: 0 }}>search</span>
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search documents…"
-          className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-outline-variant/30 bg-white focus:outline-none focus:ring-2 focus:ring-secondary/20"
+          style={{ flex: 1, border: "none", outline: "none", fontSize: 13, color: "#1e293b", background: "transparent" }}
         />
       </div>
 
       {/* Split layout — fills remaining height */}
-      <div className="grid grid-cols-5 gap-4 flex-1 min-h-0">
+      <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: 16, flex: 1, minHeight: 0 }}>
 
         {/* Document list — scrollable */}
-        <div className="col-span-3 overflow-y-auto space-y-2 pr-1 no-scrollbar">
+        <div className="no-scrollbar" style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, paddingRight: 4 }}>
           {docs.map((doc) => {
             const st = STATUS_STYLE[doc.status] || STATUS_STYLE.pending;
             return (
               <div
                 key={doc._id}
                 onClick={() => setSelected(doc)}
-                className="flex items-center gap-4 bg-white rounded-xl border p-4 cursor-pointer transition-all hover:shadow-sm"
-                style={{ borderColor: selected?._id === doc._id ? "#00daf3" : "#c4c6d2" + "50" }}
+                style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", borderRadius: 12, border: `1px solid ${selected?._id === doc._id ? "#00daf3" : "#e2e8f0"}`, padding: "14px 16px", cursor: "pointer", boxShadow: selected?._id === doc._id ? "0 0 0 2px rgba(0,218,243,0.15)" : "none" }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: st.bg }}>
-                  <span className="material-symbols-outlined text-sm" style={{ color: st.color }}>{st.icon}</span>
+                <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: st.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: st.color }}>{st.icon}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-on-background truncate">{doc.name}</p>
-                  <p className="text-xs text-on-surface-variant">{doc.type}</p>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#0f172a", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{doc.name}</p>
+                  <p style={{ fontSize: 11, color: "#94a3b8", margin: "2px 0 0" }}>{doc.type}</p>
                   {doc.uploadedAt && (
-                    <p className="text-[10px] text-on-surface-variant mt-0.5">
+                    <p style={{ fontSize: 10, color: "#94a3b8", margin: "2px 0 0" }}>
                       Uploaded {new Date(doc.uploadedAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}
                     </p>
                   )}
                 </div>
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full capitalize flex-shrink-0"
-                  style={{ backgroundColor: st.bg, color: st.color }}
-                >
+                <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 9px", borderRadius: 99, backgroundColor: st.bg, color: st.color, flexShrink: 0, textTransform: "capitalize" }}>
                   {doc.status}
                 </span>
                 {doc.status === "pending" && (
                   <button
-                    className="text-xs font-semibold px-2.5 py-1.5 rounded-lg flex-shrink-0"
-                    style={{ backgroundColor: "#fff3e0", color: "#e65100" }}
+                    style={{ fontSize: 11, fontWeight: 600, padding: "5px 10px", borderRadius: 8, backgroundColor: "#fff3e0", color: "#e65100", border: "none", cursor: "pointer", flexShrink: 0 }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     Remind
@@ -157,7 +152,7 @@ export default function Documents() {
         </div>
 
         {/* Right panel — scrollable */}
-        <div className="col-span-2 overflow-y-auto space-y-4 no-scrollbar">
+        <div className="no-scrollbar" style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 }}>
           {selected ? (
             <>
               <div className="bg-white rounded-xl border border-outline-variant/30 p-5 shadow-sm">

@@ -27,118 +27,126 @@ const AGENTS = [
   },
 ];
 
+const card = {
+  background: "#fff",
+  border: "1px solid #e2e8f0",
+  borderRadius: 12,
+  padding: "20px 24px",
+  boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+  borderLeft: "4px solid",
+};
+
 export default function Dashboard() {
   const leads = useQuery(api.leads.getAll);
   const totalLeads = leads?.length ?? 2842;
   const chartData = mockMonthlyData;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 24, overflowX: "hidden" }}>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
         <div>
-          <h2 className="text-3xl font-extrabold text-blue-950 tracking-tight">Executive Command</h2>
-          <p className="text-on-surface-variant font-medium mt-1">Real-time oversight across all regional branches.</p>
+          <h2 style={{ fontSize: 28, fontWeight: 900, color: "#001b44", fontFamily: "Manrope, sans-serif", margin: 0 }}>Executive Command</h2>
+          <p style={{ fontSize: 14, color: "#747781", marginTop: 4 }}>Real-time oversight across all regional branches.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="bg-surface-container-low px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold text-slate-600 cursor-pointer hover:bg-surface-container transition-colors">
-            <span className="material-symbols-outlined text-sm">calendar_today</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <div className="bg-surface-container-low" style={{ padding: "8px 14px", borderRadius: 8, display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#475569", cursor: "pointer" }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>calendar_today</span>
             <span>Last 30 Days</span>
-            <span className="material-symbols-outlined text-sm">expand_more</span>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>expand_more</span>
           </div>
-          <div className="bg-surface-container-low px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold text-slate-600 cursor-pointer hover:bg-surface-container transition-colors">
-            <span className="material-symbols-outlined text-sm">location_on</span>
+          <div className="bg-surface-container-low" style={{ padding: "8px 14px", borderRadius: 8, display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#475569", cursor: "pointer" }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>location_on</span>
             <span>Global Branches</span>
-            <span className="material-symbols-outlined text-sm">expand_more</span>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>expand_more</span>
           </div>
-          <button className="bg-primary text-white px-5 py-2 rounded-lg text-sm font-bold shadow-sm flex items-center gap-2 hover:bg-primary-container transition-colors">
-            <span className="material-symbols-outlined text-sm">filter_list</span>
+          <button style={{ background: "#001b44", color: "#fff", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>filter_list</span>
             Filters
           </button>
         </div>
       </div>
 
-      {/* Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-primary shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-xs font-bold text-outline uppercase tracking-wider">Total Leads</p>
-            <span className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">+12.4%</span>
+      {/* KPI Cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+        <div style={{ ...card, borderLeftColor: "#001b44" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#747781", textTransform: "uppercase", letterSpacing: "0.07em", margin: 0 }}>Total Leads</p>
+            <span style={{ background: "#dcfce7", color: "#16a34a", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 99 }}>+12.4%</span>
           </div>
-          <h3 className="text-3xl font-extrabold text-blue-950">{totalLeads.toLocaleString()}</h3>
-          <p className="text-xs text-on-surface-variant mt-2">v.s. 2,528 last month</p>
+          <h3 style={{ fontSize: 32, fontWeight: 900, color: "#001b44", margin: 0 }}>{totalLeads.toLocaleString()}</h3>
+          <p style={{ fontSize: 12, color: "#747781", marginTop: 6 }}>v.s. 2,528 last month</p>
         </div>
 
-        <div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-secondary shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-xs font-bold text-outline uppercase tracking-wider">Conversion Rate</p>
-            <span className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">+3.2%</span>
+        <div style={{ ...card, borderLeftColor: "#325f9c" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#747781", textTransform: "uppercase", letterSpacing: "0.07em", margin: 0 }}>Conversion Rate</p>
+            <span style={{ background: "#dcfce7", color: "#16a34a", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 99 }}>+3.2%</span>
           </div>
-          <h3 className="text-3xl font-extrabold text-blue-950">24.8%</h3>
-          <div className="w-full bg-slate-100 h-1.5 mt-4 rounded-full overflow-hidden">
-            <div className="bg-secondary h-full rounded-full" style={{ width: "24.8%" }} />
+          <h3 style={{ fontSize: 32, fontWeight: 900, color: "#001b44", margin: 0 }}>24.8%</h3>
+          <div style={{ width: "100%", background: "#f1f5f9", height: 6, borderRadius: 99, marginTop: 14, overflow: "hidden" }}>
+            <div style={{ width: "24.8%", height: "100%", background: "#325f9c", borderRadius: 99 }} />
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-tertiary-fixed-dim shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-xs font-bold text-outline uppercase tracking-wider">Revenue Forecast</p>
-            <span className="material-symbols-outlined text-tertiary-fixed-dim">trending_up</span>
+        <div style={{ ...card, borderLeftColor: "#00daf3" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#747781", textTransform: "uppercase", letterSpacing: "0.07em", margin: 0 }}>Revenue Forecast</p>
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: "#00daf3" }}>trending_up</span>
           </div>
-          <h3 className="text-3xl font-extrabold text-blue-950">$1.2M</h3>
-          <p className="text-xs text-on-surface-variant mt-2 font-medium">Projected Q4 Closure</p>
+          <h3 style={{ fontSize: 32, fontWeight: 900, color: "#001b44", margin: 0 }}>$1.2M</h3>
+          <p style={{ fontSize: 12, color: "#747781", marginTop: 6, fontWeight: 500 }}>Projected Q4 Closure</p>
         </div>
 
-        <div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-blue-200 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-xs font-bold text-outline uppercase tracking-wider">Active Cases</p>
-            <span className="text-blue-600 material-symbols-outlined">folder_open</span>
+        <div style={{ ...card, borderLeftColor: "#93c5fd" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#747781", textTransform: "uppercase", letterSpacing: "0.07em", margin: 0 }}>Active Cases</p>
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: "#2563eb" }}>folder_open</span>
           </div>
-          <h3 className="text-3xl font-extrabold text-blue-950">842</h3>
-          <p className="text-xs text-on-surface-variant mt-2">156 requiring immediate attention</p>
+          <h3 style={{ fontSize: 32, fontWeight: 900, color: "#001b44", margin: 0 }}>842</h3>
+          <p style={{ fontSize: 12, color: "#747781", marginTop: 6 }}>156 requiring immediate attention</p>
         </div>
       </div>
 
       {/* Chart + AI Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl shadow-sm space-y-6">
-          <div className="flex justify-between items-center">
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20 }}>
+
+        {/* Chart */}
+        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, padding: "24px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
             <div>
-              <h4 className="text-lg font-bold text-blue-950">Monthly Lead Volume</h4>
-              <p className="text-sm text-outline">Lead acquisition across all channels</p>
+              <h4 style={{ fontSize: 16, fontWeight: 700, color: "#001b44", margin: 0 }}>Monthly Lead Volume</h4>
+              <p style={{ fontSize: 13, color: "#747781", marginTop: 2 }}>Lead acquisition across all channels</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-primary" />
-                <span className="text-xs font-semibold text-slate-600">Organic</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#001b44" }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>Organic</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-secondary-container" />
-                <span className="text-xs font-semibold text-slate-600">Referral</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#90bafd" }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>Referral</span>
               </div>
             </div>
           </div>
-          <div className="h-64 flex items-end justify-between gap-2 px-2">
+          <div style={{ height: 200, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 8, padding: "0 4px" }}>
             {(() => {
               const maxTotal = Math.max(...chartData.map(d => d.organic + d.ads));
-              const MAX_H = 240;
+              const MAX_H = 180;
               return chartData.map((d) => {
                 const total = d.organic + d.ads;
                 const barH = Math.round((total / maxTotal) * MAX_H);
                 const organicPct = Math.round((d.organic / total) * 100);
                 return (
-                  <div key={d.month} className="flex flex-col items-center gap-2 w-full">
-                    <div className="w-full relative group" style={{ height: MAX_H, display: "flex", alignItems: "flex-end" }}>
-                      <div
-                        className="w-full bg-slate-50 rounded-t-lg relative hover:bg-slate-100 transition-colors"
-                        style={{ height: barH }}
-                      >
-                        <div className="absolute bottom-0 w-full bg-primary/20 rounded-t-lg" style={{ height: "100%" }} />
-                        <div className="absolute bottom-0 w-full bg-primary rounded-t-lg" style={{ height: `${organicPct}%` }} />
+                  <div key={d.month} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: "100%", height: MAX_H, display: "flex", alignItems: "flex-end" }}>
+                      <div style={{ width: "100%", height: barH, position: "relative", borderRadius: "6px 6px 0 0", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", bottom: 0, width: "100%", height: "100%", background: "rgba(0,27,68,0.12)" }} />
+                        <div style={{ position: "absolute", bottom: 0, width: "100%", height: `${organicPct}%`, background: "#001b44", borderRadius: "6px 6px 0 0" }} />
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-outline uppercase">{d.month}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: "#747781", textTransform: "uppercase", letterSpacing: "0.05em" }}>{d.month}</span>
                   </div>
                 );
               });
@@ -147,33 +155,33 @@ export default function Dashboard() {
         </div>
 
         {/* AI Insights Panel */}
-        <div className="glass-panel p-8 rounded-xl border border-white/40 shadow-xl overflow-hidden relative">
-          <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-            <span className="material-symbols-outlined" style={{ fontSize: "9rem" }}>psychology</span>
+        <div className="glass-panel" style={{ borderRadius: 12, border: "1px solid rgba(255,255,255,0.4)", boxShadow: "0 4px 20px rgba(0,0,0,0.08)", overflow: "hidden", position: "relative" }}>
+          <div style={{ position: "absolute", top: 0, right: 0, padding: 16, opacity: 0.08, pointerEvents: "none" }}>
+            <span className="material-symbols-outlined" style={{ fontSize: "8rem" }}>psychology</span>
           </div>
-          <div className="relative z-10 space-y-6">
-            <div className="flex items-center gap-2 text-tertiary-fixed-dim">
-              <span className="material-symbols-outlined icon-fill">colors_spark</span>
-              <h4 className="font-headline font-extrabold uppercase tracking-widest text-xs">AI Insights</h4>
+          <div style={{ position: "relative", zIndex: 10, padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#00daf3" }}>
+              <span className="material-symbols-outlined icon-fill" style={{ fontSize: 18 }}>colors_spark</span>
+              <h4 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em", margin: 0 }}>AI Insights</h4>
             </div>
-            <div className="space-y-4">
-              <div className="bg-white/80 p-4 rounded-lg shadow-sm border-l-4 border-tertiary-fixed-dim">
-                <h5 className="text-sm font-bold text-blue-950">High-priority Lead Identified</h5>
-                <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                  System flagged &ldquo;TechCorp Visa Project&rdquo; for potential $200k ARR based on profile match.
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ background: "rgba(255,255,255,0.8)", padding: 14, borderRadius: 8, boxShadow: "0 1px 3px rgba(0,0,0,0.06)", borderLeft: "4px solid #00daf3" }}>
+                <h5 style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0 }}>High-priority Lead Identified</h5>
+                <p style={{ fontSize: 11, color: "#434750", marginTop: 4, lineHeight: 1.5 }}>
+                  System flagged "TechCorp Visa Project" for potential $200k ARR based on profile match.
                 </p>
-                <button className="mt-3 text-[10px] font-black text-tertiary-container uppercase tracking-tighter hover:underline">View Case</button>
+                <button style={{ marginTop: 8, fontSize: 10, fontWeight: 800, color: "#004f58", textTransform: "uppercase", letterSpacing: "0.05em", background: "none", border: "none", cursor: "pointer", padding: 0 }}>View Case</button>
               </div>
-              <div className="bg-white/80 p-4 rounded-lg shadow-sm border-l-4 border-error">
-                <h5 className="text-sm font-bold text-blue-950">Workflow Bottleneck</h5>
-                <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
+              <div style={{ background: "rgba(255,255,255,0.8)", padding: 14, borderRadius: 8, boxShadow: "0 1px 3px rgba(0,0,0,0.06)", borderLeft: "4px solid #ba1a1a" }}>
+                <h5 style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0 }}>Workflow Bottleneck</h5>
+                <p style={{ fontSize: 11, color: "#434750", marginTop: 4, lineHeight: 1.5 }}>
                   Document verification at Toronto Branch is 40% slower than avg. 12 cases pending.
                 </p>
-                <button className="mt-3 text-[10px] font-black text-error uppercase tracking-tighter hover:underline">Resolve Now</button>
+                <button style={{ marginTop: 8, fontSize: 10, fontWeight: 800, color: "#ba1a1a", textTransform: "uppercase", letterSpacing: "0.05em", background: "none", border: "none", cursor: "pointer", padding: 0 }}>Resolve Now</button>
               </div>
-              <div className="bg-white/80 p-4 rounded-lg shadow-sm border-l-4 border-secondary">
-                <h5 className="text-sm font-bold text-blue-950">Success Rate Prediction</h5>
-                <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
+              <div style={{ background: "rgba(255,255,255,0.8)", padding: 14, borderRadius: 8, boxShadow: "0 1px 3px rgba(0,0,0,0.06)", borderLeft: "4px solid #325f9c" }}>
+                <h5 style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0 }}>Success Rate Prediction</h5>
+                <p style={{ fontSize: 11, color: "#434750", marginTop: 4, lineHeight: 1.5 }}>
                   O-1 Visa success probability increased to 94% following latest policy automation update.
                 </p>
               </div>
@@ -183,58 +191,65 @@ export default function Dashboard() {
       </div>
 
       {/* Regions + Leaderboard */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-surface-container-low p-8 rounded-xl">
-          <h4 className="text-lg font-bold text-blue-950 mb-6">Success Rates by Region</h4>
-          <div className="space-y-6">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, paddingBottom: 24 }}>
+
+        {/* Regions */}
+        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, padding: 24, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+          <h4 style={{ fontSize: 16, fontWeight: 700, color: "#001b44", margin: "0 0 20px 0" }}>Success Rates by Region</h4>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {REGIONS.map((r) => (
-              <div key={r.name} className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold">
-                  <span className="text-slate-700">{r.name}</span>
-                  <span className="text-blue-950">{r.pct}%</span>
+              <div key={r.name}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+                  <span style={{ color: "#334155" }}>{r.name}</span>
+                  <span style={{ color: "#001b44" }}>{r.pct}%</span>
                 </div>
-                <div className="h-2 w-full bg-slate-200 rounded-full">
-                  <div className={`h-full ${r.barColor} rounded-full transition-all duration-500`} style={{ width: `${r.pct}%` }} />
+                <div style={{ height: 7, width: "100%", background: "#f1f5f9", borderRadius: 99, overflow: "hidden" }}>
+                  <div className={r.barColor} style={{ height: "100%", width: `${r.pct}%`, borderRadius: 99 }} />
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-8 rounded-xl shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-            <h4 className="text-lg font-bold text-blue-950">Agent Performance</h4>
-            <a href="#" className="text-xs font-bold text-secondary hover:underline">Full Report</a>
+        {/* Leaderboard */}
+        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, padding: 24, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <h4 style={{ fontSize: 16, fontWeight: 700, color: "#001b44", margin: 0 }}>Agent Performance</h4>
+            <a href="#" style={{ fontSize: 12, fontWeight: 700, color: "#325f9c", textDecoration: "none" }}>Full Report</a>
           </div>
-          <div className="space-y-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {AGENTS.map((agent) => (
-              <div key={agent.rank} className="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer">
-                <div className="w-8 text-center font-headline font-bold text-slate-400">{agent.rank}</div>
+              <div key={agent.rank} style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 10px", borderRadius: 8, cursor: "pointer" }}
+                onMouseEnter={e => e.currentTarget.style.background = "#f8fafc"}
+                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              >
+                <div style={{ width: 28, textAlign: "center", fontWeight: 700, fontSize: 13, color: "#94a3b8", fontFamily: "Manrope, sans-serif", flexShrink: 0 }}>{agent.rank}</div>
                 <img
                   alt={agent.name}
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                  style={{ width: 38, height: 38, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
                   src={agent.photo}
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                     e.currentTarget.nextSibling.style.display = "flex";
                   }}
                 />
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 select-none" style={{ backgroundColor: agent.bg, display: "none" }}>
+                <div style={{ width: 38, height: 38, borderRadius: "50%", backgroundColor: agent.bg, display: "none", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>
                   {agent.initials}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-blue-950">{agent.name}</p>
-                  <p className="text-xs text-outline truncate">{agent.role}</p>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0 }}>{agent.name}</p>
+                  <p style={{ fontSize: 11, color: "#747781", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{agent.role}</p>
                 </div>
-                <div className="text-right flex-shrink-0">
-                  <p className="text-sm font-bold text-blue-950">{agent.cases} Cases</p>
-                  <p className="text-[10px] text-green-600 font-bold">{agent.pct} Success</p>
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0 }}>{agent.cases} Cases</p>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: "#16a34a", margin: 0 }}>{agent.pct} Success</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
+
     </div>
   );
 }

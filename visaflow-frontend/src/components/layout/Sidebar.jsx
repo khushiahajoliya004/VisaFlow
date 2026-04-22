@@ -37,15 +37,15 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto no-scrollbar min-h-0">
+      <nav className="flex-1 flex flex-col gap-0.5 overflow-y-auto no-scrollbar min-h-0 px-3">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
               isActive
-                ? "flex items-center gap-3 bg-white text-blue-700 shadow-sm rounded-lg mx-2 my-1 px-4 py-3 text-sm font-semibold tracking-wide transition-transform active:translate-x-1"
-                : "flex items-center gap-3 text-slate-600 hover:text-blue-900 hover:bg-slate-100 rounded-lg mx-2 my-1 px-4 py-3 text-sm font-semibold tracking-wide transition-all duration-200"
+                ? "flex items-center gap-3 bg-white text-blue-700 shadow-sm rounded-lg px-4 py-3.5 text-sm font-semibold tracking-wide transition-transform active:translate-x-1"
+                : "flex items-center gap-3 text-slate-600 hover:text-blue-900 hover:bg-slate-100 rounded-lg px-4 py-3.5 text-sm font-semibold tracking-wide transition-all duration-200"
             }
           >
             <span className="material-symbols-outlined text-[20px]">{item.icon}</span>

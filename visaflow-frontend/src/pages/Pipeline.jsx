@@ -156,17 +156,17 @@ export default function Pipeline() {
 
       {/* Kanban */}
       {view === "kanban" && (
-        <div className="kanban-scroll flex gap-3 flex-1 min-h-0 pb-2 overflow-x-auto overflow-y-hidden">
+        <div className="kanban-scroll flex-1 min-h-0 pb-2 overflow-x-auto overflow-y-hidden" style={{ display: "flex", gap: 16 }}>
           {COLUMNS.map((col) => {
             const colLeads = filtered.filter((l) => l.status === col.key);
             return (
-              <div key={col.key} className="flex-shrink-0 w-56 flex flex-col overflow-hidden" onDragOver={onDragOver} onDrop={(e) => onDrop(e, col.key)}>
-                <div className="flex items-center gap-2 mb-3 px-1">
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: col.color }} />
-                  <span className="text-[10px] font-bold tracking-wider" style={{ color: col.color }}>{col.label}</span>
-                  <span className="ml-auto text-[10px] font-bold text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded-full">{colLeads.length}</span>
+              <div key={col.key} style={{ flexShrink: 0, width: 280, display: "flex", flexDirection: "column", overflow: "hidden" }} onDragOver={onDragOver} onDrop={(e) => onDrop(e, col.key)}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, padding: "0 4px" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: col.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.07em", color: col.color }}>{col.label}</span>
+                  <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, color: "#747781", background: "#eceef0", padding: "1px 7px", borderRadius: 99 }}>{colLeads.length}</span>
                 </div>
-                <div className="flex-1 overflow-y-auto space-y-2 min-h-16 pr-0.5 no-scrollbar">
+                <div className="no-scrollbar" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, minHeight: 64, paddingRight: 2 }}>
                   {colLeads.map((lead) => (
                     <LeadCard key={lead._id} lead={lead} colKey={col.key} onMove={moveStage} onDragStart={onDragStart} isDragging={dragId === lead._id} onConvert={setConvertLead} />
                   ))}
@@ -255,59 +255,70 @@ function LeadCard({ lead, colKey, onMove, onDragStart, isDragging, onConvert }) 
     <div
       draggable
       onDragStart={(e) => onDragStart(e, lead._id)}
-      className="bg-white rounded-xl border border-outline-variant/30 p-3 hover:shadow-sm transition-all cursor-grab active:cursor-grabbing"
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      style={{
+        background: "#fff",
+        border: "1px solid #e2e8f0",
+        borderRadius: 12,
+        padding: "14px 16px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+        opacity: isDragging ? 0.5 : 1,
+        cursor: "grab",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
     >
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-center gap-2">
+      {/* Name + Score */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <Avatar name={lead.name} size="sm" />
           <div>
-            <p className="text-xs font-bold text-on-background leading-tight">{lead.name}</p>
-            <p className="text-[10px] text-on-surface-variant">{lead.visaType} · {lead.country}</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#001b44", margin: 0, lineHeight: 1.3 }}>{lead.name}</p>
+            <p style={{ fontSize: 11, color: "#747781", margin: 0 }}>{lead.country} · {lead.visaType}</p>
           </div>
         </div>
         {lead.aiScore !== undefined && (
-          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#e6faf7", color: "#00a884" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 99, backgroundColor: "#e6faf7", color: "#00a884", flexShrink: 0 }}>
             {lead.aiScore}
           </span>
         )}
       </div>
 
-      <div className="flex flex-wrap gap-1 mb-2">
+      {/* Badges */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
         <Badge label={lead.source} variant={lead.source} />
         {lead.budget && (
-          <span className="text-[10px] bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded-full font-medium">
+          <span style={{ fontSize: 10, background: "#eceef0", color: "#434750", padding: "2px 8px", borderRadius: 99, fontWeight: 500 }}>
             ₹{(lead.budget / 1000).toFixed(0)}k
           </span>
         )}
       </div>
 
+      {/* AI Recommendation */}
       {isQualified && (
-        <div className="mb-2 p-2 rounded-lg text-[10px]" style={{ backgroundColor: "#e6faf7", color: "#065f46" }}>
-          <span className="font-bold" style={{ color: "#00a884" }}>✦ AI REC: </span>
+        <div style={{ background: "#e6faf7", borderRadius: 8, padding: "8px 10px", fontSize: 11, color: "#065f46" }}>
+          <span style={{ fontWeight: 700, color: "#00a884" }}>✦ AI REC: </span>
           Request IELTS &amp; Employment docs now — high close probability.
         </div>
       )}
 
-      {/* Move Stage button */}
+      {/* Move Stage */}
       {NEXT_STATUS[lead.status] && (
         <button
           onClick={(e) => { e.stopPropagation(); onMove(lead._id); }}
-          className="w-full text-[10px] font-semibold py-1.5 rounded-lg transition-all border border-outline-variant/30 hover:bg-surface-container mb-1.5"
-          style={{ backgroundColor: "#f2f4f6", color: "#001b44" }}
+          style={{ width: "100%", fontSize: 11, fontWeight: 600, padding: "7px 0", borderRadius: 8, background: "#f1f5f9", color: "#001b44", border: "1px solid #e2e8f0", cursor: "pointer" }}
         >
           Move Stage →
         </button>
       )}
 
-      {/* Convert to Case button — shown from Qualified onwards */}
+      {/* Convert to Case */}
       {canConvert && (
         <button
           onClick={(e) => { e.stopPropagation(); onConvert(lead); }}
-          className="w-full text-[10px] font-bold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1"
-          style={{ backgroundColor: "#001b44", color: "#fff" }}
+          style={{ width: "100%", fontSize: 11, fontWeight: 700, padding: "7px 0", borderRadius: 8, background: "#001b44", color: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}
         >
-          <span className="material-symbols-outlined text-sm">folder_shared</span>
+          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>folder_shared</span>
           Convert to Case
         </button>
       )}

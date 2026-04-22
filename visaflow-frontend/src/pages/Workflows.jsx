@@ -30,10 +30,10 @@ export default function Workflows() {
   }
 
   return (
-    <div className="p-6 grid grid-cols-12 gap-4 h-full overflow-hidden">
+    <div style={{ padding: 24, display: "grid", gridTemplateColumns: "3fr 6fr 3fr", gap: 16, height: "100%", overflow: "hidden" }}>
 
       {/* ── LEFT: Active automations ── */}
-      <div className="col-span-3 space-y-4 overflow-y-auto no-scrollbar">
+      <div className="no-scrollbar" style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
         <div className="bg-white rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden">
           <div className="p-4 border-b border-outline-variant/30">
             <h2 className="text-sm font-bold text-on-background">Active Automations</h2>
@@ -42,9 +42,9 @@ export default function Workflows() {
             </p>
           </div>
 
-          <div className="divide-y divide-outline-variant/20">
-            {workflows.map((w) => (
-              <div key={w._id} className="p-4">
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {workflows.map((w, i) => (
+              <div key={w._id} style={{ padding: "14px 16px", borderTop: i > 0 ? "1px solid #f1f5f9" : "none" }}>
                 <div className="flex items-start justify-between mb-1">
                   <p className="text-sm font-semibold text-on-background leading-tight flex-1 pr-2">{w.name}</p>
                   <button
@@ -60,8 +60,8 @@ export default function Workflows() {
                 </div>
                 <p className="text-[10px] text-on-surface-variant font-mono">{w.trigger}</p>
                 {w.successRate && (
-                  <div className="flex items-center gap-2 mt-2">
-                    <div className="flex-1 h-1.5 rounded-full bg-surface-container overflow-hidden">
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                    <div style={{ flex: 1, height: 6, borderRadius: 99, background: "#f1f5f9", overflow: "hidden" }}>
                       <div className="h-full rounded-full" style={{ width: `${w.successRate}%`, backgroundColor: "#00daf3" }} />
                     </div>
                     <span className="text-[10px] font-bold" style={{ color: "#00a884" }}>{w.successRate}%</span>
@@ -86,7 +86,7 @@ export default function Workflows() {
       </div>
 
       {/* ── CENTER: Visual Canvas ── */}
-      <div className="col-span-6 space-y-4 overflow-y-auto no-scrollbar">
+      <div className="no-scrollbar" style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
         <div className="bg-white rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden">
           <div className="p-4 border-b border-outline-variant/30 flex items-center justify-between">
             <h2 className="text-sm font-bold text-on-background">Workflow Canvas</h2>
@@ -166,7 +166,7 @@ export default function Workflows() {
         {/* Blueprint templates */}
         <div>
           <h3 className="text-sm font-bold text-on-background mb-3">Blueprint Templates</h3>
-          <div className="grid grid-cols-4 gap-3">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
             {BLUEPRINTS.map((bp) => (
               <button
                 key={bp.id}
@@ -191,7 +191,7 @@ export default function Workflows() {
       </div>
 
       {/* ── RIGHT: AI Insight Pane ── */}
-      <div className="col-span-3 space-y-4 overflow-y-auto no-scrollbar">
+      <div className="no-scrollbar" style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 }}>
 
         {/* AI Insight card */}
         <div className="rounded-xl p-5 shadow-lg" style={{ background: "linear-gradient(135deg, #001b44 0%, #002f6c 100%)" }}>
@@ -214,16 +214,16 @@ export default function Workflows() {
         {/* Performance Overview */}
         <div className="bg-white rounded-xl border border-outline-variant/30 p-4 shadow-sm">
           <h3 className="text-sm font-bold text-on-background mb-3">Performance Overview</h3>
-          <div className="space-y-3">
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {[
               { label: "Leads auto-routed",     value: "214",   icon: "sync" },
               { label: "WhatsApp sent",          value: "1,847", icon: "chat" },
               { label: "Documents requested",    value: "392",   icon: "attach_file" },
               { label: "Payments triggered",     value: "78",    icon: "payments" },
             ].map((s) => (
-              <div key={s.label} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-sm text-on-surface-variant">{s.icon}</span>
+              <div key={s.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#94a3b8" }}>{s.icon}</span>
                   <span className="text-xs text-on-surface-variant">{s.label}</span>
                 </div>
                 <span className="text-sm font-bold text-on-background">{s.value}</span>
@@ -235,12 +235,12 @@ export default function Workflows() {
         {/* Bottleneck Alert */}
         <div className="bg-white rounded-xl border border-outline-variant/30 p-4 shadow-sm">
           <h3 className="text-sm font-bold text-on-background mb-3">Bottleneck Alert</h3>
-          <div className="space-y-2">
-            <div className="p-2.5 rounded-lg" style={{ backgroundColor: "#fff3e0" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ padding: "10px 12px", borderRadius: 8, backgroundColor: "#fff3e0" }}>
               <p className="text-xs font-semibold" style={{ color: "#e65100" }}>Documents Pending</p>
               <p className="text-xs text-on-surface-variant mt-0.5">14 leads stuck for 5+ days</p>
             </div>
-            <div className="p-2.5 rounded-lg" style={{ backgroundColor: "#ffebee" }}>
+            <div style={{ padding: "10px 12px", borderRadius: 8, backgroundColor: "#ffebee" }}>
               <p className="text-xs font-semibold" style={{ color: "#c62828" }}>Payment Overdue</p>
               <p className="text-xs text-on-surface-variant mt-0.5">6 cases with overdue payments</p>
             </div>

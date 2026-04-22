@@ -13,7 +13,7 @@ export default function Layout() {
       {/* Right column: topbar + scrollable page content */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
-        <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+        <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-surface">
           <Outlet />
         </main>
       </div>
