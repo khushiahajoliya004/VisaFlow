@@ -1,55 +1,75 @@
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 export default function Topbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login", { replace: true });
+  }
+
+  const initials = user?.name
+    ? user.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)
+    : "??";
+
+  const roleLabel = {
+    admin: "Admin",
+    manager: "Manager",
+    counsellor: "Counsellor",
+    documentExecutive: "Document Executive",
+  }[user?.role] ?? user?.role;
+
   return (
-    <header className="sticky top-0 z-40 bg-white/60 backdrop-blur-xl flex justify-between items-center px-8 h-16 w-full shadow-sm">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full border-b border-slate-100 shadow-sm gap-4">
 
       {/* Search */}
-      <div className="flex items-center gap-4 flex-1">
-        <div className="relative w-full max-w-md">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">
-            search
-          </span>
-          <input
-            className="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/20 placeholder:text-outline-variant"
-            placeholder="Global search cases, documents, or agents..."
-            type="text"
-          />
-        </div>
+      <div className="flex items-center flex-1 max-w-md bg-slate-50 border border-slate-200 rounded-lg px-3 gap-2 h-9">
+        <span className="material-symbols-outlined text-slate-400 shrink-0" style={{ fontSize: 18 }}>search</span>
+        <input
+          className="flex-1 bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
+          placeholder="Search cases, documents, agents..."
+          type="text"
+        />
       </div>
 
-      {/* Right controls */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-4">
-          <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-tertiary-fixed-dim transition-colors">
-            <span className="material-symbols-outlined icon-fill">colors_spark</span>
-          </button>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
-            <span className="material-symbols-outlined">help</span>
-          </button>
-        </div>
+      {/* Right side */}
+      <div className="flex items-center gap-2">
 
-        <div className="h-8 w-[1px] bg-outline-variant/30" />
+        {/* Icon buttons */}
+        <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>notifications</span>
+        </button>
+        <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors">
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>help</span>
+        </button>
 
-        {/* User */}
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-bold text-blue-950">Marcus Chen</p>
-            <p className="text-[10px] text-slate-500 font-medium">Head of Operations</p>
+        {/* Divider */}
+        <div className="h-7 w-px bg-slate-200 mx-1" />
+
+        {/* User info */}
+        <div className="flex items-center gap-2.5">
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-bold text-blue-950 leading-tight">{user?.name ?? "—"}</p>
+            <p className="text-[11px] text-slate-400 leading-tight">
+              {roleLabel}{user?.branch ? ` · ${user.branch}` : ""}
+            </p>
           </div>
-          <img
-            alt="Consultant Profile"
-            className="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlD5kfAAIkHYHxm0FhR_1cFNy5WPSVRcmVhcQXMKlLlxLvPdBxNfwt1w4Zw2fI2TY96VHkuYDUchWp-rmIVilhWXMz9D2AxvA8JCZJcUZz22-AQQW2xp_ERfyQL5Qz3kN5voHVhzCAJFBJfKUKDxg9g3ZByDJ41AuqLJNOzvxAgr3a0J5gZK7a8QJPjrSOtNnfhhN79X8sgVDqdKgsZ1yosOhRpAwNczfbdc_FRCGsjmnsRWA28xgVld7A-nBJHbY0AfL44HHXIdw"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-              e.currentTarget.nextSibling.style.display = "flex";
-            }}
-          />
-          <div className="w-10 h-10 rounded-full bg-primary items-center justify-center text-white font-bold text-sm border-2 border-white shadow-sm select-none" style={{ display: "none" }}>
-            MC
+
+          {/* Avatar */}
+          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-sm select-none shrink-0">
+            {initials}
           </div>
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            title="Sign out"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>
+          </button>
         </div>
       </div>
     </header>

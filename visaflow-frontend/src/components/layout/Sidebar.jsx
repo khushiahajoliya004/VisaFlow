@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const NAV_ITEMS = [
   { path: "/dashboard",   label: "Dashboard",  icon: "dashboard" },
@@ -12,6 +13,12 @@ const NAV_ITEMS = [
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <aside className="w-64 shrink-0 h-screen bg-slate-50 flex flex-col py-6 border-r border-slate-100 overflow-hidden">
@@ -64,6 +71,13 @@ export default function Sidebar() {
           <button className="flex items-center gap-3 text-slate-500 hover:text-blue-900 px-4 py-2 text-xs font-semibold w-full">
             <span className="material-symbols-outlined text-sm">contact_support</span>
             <span>Support</span>
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 text-red-400 hover:text-red-600 px-4 py-2 text-xs font-semibold w-full"
+          >
+            <span className="material-symbols-outlined text-sm">logout</span>
+            <span>Sign Out</span>
           </button>
         </div>
       </div>
